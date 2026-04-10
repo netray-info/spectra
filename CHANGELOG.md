@@ -3,6 +3,12 @@
 All notable changes to spectra are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.2.0] - 2026-04-10
+
+### Changed
+- Bump netray-common to 0.6.0 (9ea2a1d)
+- Assign unique dev ports: backend 8083, metrics 9093, vite 5176 (0b6a175)
+
 ## [0.1.0] - 2026-04-10
 
 ### Added
