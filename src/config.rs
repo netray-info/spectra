@@ -13,11 +13,11 @@ pub struct Config {
     #[serde(default = "default_limits")]
     pub limits: LimitsConfig,
     #[serde(default)]
-    pub enrichment: EnrichmentConfig,
-    #[serde(default)]
     pub telemetry: TelemetryConfig,
     #[serde(default)]
-    pub meta: MetaConfig,
+    pub ecosystem: EcosystemConfig,
+    #[serde(default)]
+    pub backends: BackendsConfig,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -56,26 +56,12 @@ pub struct LimitsConfig {
     pub max_concurrent_connections: usize,
 }
 
-#[derive(Debug, Clone, Deserialize)]
-pub struct EnrichmentConfig {
-    #[serde(default)]
-    pub ip_url: Option<String>,
-    #[serde(default = "default_enrichment_timeout_ms")]
-    pub timeout_ms: u64,
-}
+pub use netray_common::ecosystem::EcosystemConfig;
 
 #[derive(Debug, Clone, Default, Deserialize)]
-pub struct MetaConfig {
+pub struct BackendsConfig {
     #[serde(default)]
-    pub ip_base_url: Option<String>,
-    #[serde(default)]
-    pub dns_base_url: Option<String>,
-    #[serde(default)]
-    pub tls_base_url: Option<String>,
-    #[serde(default)]
-    pub http_base_url: Option<String>,
-    #[serde(default)]
-    pub lens_base_url: Option<String>,
+    pub ip: Option<netray_common::backend::BackendConfig>,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -195,24 +181,11 @@ fn default_max_concurrent_connections() -> usize {
     256
 }
 
-fn default_enrichment_timeout_ms() -> u64 {
-    500
-}
-
 fn default_service_name() -> String {
     "spectra".to_string()
 }
 fn default_sample_rate() -> f64 {
     1.0
-}
-
-impl Default for EnrichmentConfig {
-    fn default() -> Self {
-        Self {
-            ip_url: None,
-            timeout_ms: default_enrichment_timeout_ms(),
-        }
-    }
 }
 
 #[cfg(test)]

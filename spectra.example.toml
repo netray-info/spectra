@@ -16,10 +16,6 @@ per_target_per_minute = 30
 per_target_burst = 10
 max_concurrent_connections = 256
 
-[enrichment]
-ip_url = "https://ip.example.com"  # URL of the ifconfig-rs enrichment service. Omit or leave blank to disable IP enrichment.
-timeout_ms = 500
-
 [telemetry]
 log_format = "json"  # Override with log_format = "text" for local development
 enabled = false
@@ -27,11 +23,19 @@ enabled = false
 service_name = "spectra"
 sample_rate = 1.0
 
-# [meta]
-# Base URLs for suite cross-navigation links served to the frontend.
-# All keys are optional. Omit the section entirely to disable ecosystem links.
-# ip_base_url = "https://ip.netray.info"
-# dns_base_url = "https://dns.netray.info"
-# tls_base_url = "https://tls.netray.info"
-# http_base_url = "https://http.netray.info"
-# lens_base_url = "https://lens.netray.info"
+# [ecosystem]
+# Public URLs for cross-tool navigation (served to browser frontends).
+# ip_base_url = "https://ip.example.com"
+# dns_base_url = "https://dns.example.com"
+# tls_base_url = "https://tls.example.com"
+# http_base_url = "https://http.example.com"
+# email_base_url = "https://email.example.com"
+# lens_base_url = "https://lens.example.com"
+
+# [backends.ip]
+# Internal IP enrichment backend.
+# url = "http://ifconfig-rs:8000"
+# timeout_ms = 500
+# max_concurrent = 20
+# cache_ttl_secs = 300
+# cache_capacity = 1024

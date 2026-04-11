@@ -16,13 +16,15 @@ pub struct AppState {
 
 impl AppState {
     pub fn new(config: &Config) -> Self {
-        let enrichment_client = config.enrichment.ip_url.as_ref().map(|url| {
-            Arc::new(EnrichmentClient::new(
-                url,
-                Duration::from_millis(config.enrichment.timeout_ms),
-                "spectra",
-                None,
-            ))
+        let enrichment_client = config.backends.ip.as_ref().and_then(|ip_cfg| {
+            ip_cfg.url.as_ref().map(|url| {
+                Arc::new(EnrichmentClient::new(
+                    url,
+                    Duration::from_millis(ip_cfg.timeout_ms),
+                    "spectra",
+                    None,
+                ))
+            })
         });
 
         // Shared base client for all inspection probes. Per-request settings

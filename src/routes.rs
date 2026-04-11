@@ -43,21 +43,7 @@ pub struct MetaResponse {
     pub version: &'static str,
     pub site_name: &'static str,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub ecosystem: Option<EcosystemLinks>,
-}
-
-#[derive(Debug, Serialize, ToSchema)]
-pub struct EcosystemLinks {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub ip_base_url: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub dns_base_url: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub tls_base_url: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub http_base_url: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub lens_base_url: Option<String>,
+    pub ecosystem: Option<netray_common::ecosystem::EcosystemConfig>,
 }
 
 // ---------------------------------------------------------------------------
@@ -97,7 +83,7 @@ pub struct InspectQuery {
         ReadyResponse,
         ConfigResponse,
         MetaResponse,
-        EcosystemLinks,
+        netray_common::ecosystem::EcosystemConfig,
         InspectRequest,
         InspectResponse,
         SecurityReport,
@@ -202,21 +188,9 @@ async fn config_handler() -> Json<ConfigResponse> {
     )
 )]
 async fn meta_handler(State(state): State<AppState>) -> Json<MetaResponse> {
-    let meta = &state.config.meta;
-    let has_any = meta.ip_base_url.is_some()
-        || meta.dns_base_url.is_some()
-        || meta.tls_base_url.is_some()
-        || meta.http_base_url.is_some()
-        || meta.lens_base_url.is_some();
-
-    let ecosystem = if has_any {
-        Some(EcosystemLinks {
-            ip_base_url: meta.ip_base_url.clone(),
-            dns_base_url: meta.dns_base_url.clone(),
-            tls_base_url: meta.tls_base_url.clone(),
-            http_base_url: meta.http_base_url.clone(),
-            lens_base_url: meta.lens_base_url.clone(),
-        })
+    let eco = &state.config.ecosystem;
+    let ecosystem = if eco.has_any() {
+        Some(eco.clone())
     } else {
         None
     };
@@ -371,9 +345,10 @@ async fn do_inspect_inner(
 
     let enrichment_base_url = state
         .config
-        .enrichment
-        .ip_url
-        .as_deref()
+        .backends
+        .ip
+        .as_ref()
+        .and_then(|c| c.url.as_deref())
         .unwrap_or("https://ip.netray.info");
 
     let duration_ms = start.elapsed().as_millis() as u64;
