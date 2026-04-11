@@ -3,6 +3,12 @@
 All notable changes to spectra are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.2.1] - 2026-04-11
+
+### Changed
+- Migrate to standardized ecosystem/backend config (092da2b)
+- Bump netray-common to 0.7.0 (dff0ea7)
+
 ## [0.2.0] - 2026-04-10
 
 ### Changed
