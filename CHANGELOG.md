@@ -3,6 +3,19 @@
 All notable changes to spectra are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.2.2] - 2026-05-01
+
+### Security
+- Bump rustls-webpki to 0.103.13 (RUSTSEC-2026-{0098,0099,0104})
+- Bump frontend lockfile for postcss XSS (GHSA-qx2v-qp2m-jg93)
+
+### Fixed
+- Hoist analyze_reporting and format_http_version above their `#[cfg(test)]` modules; drop unused `mut` and replace `len() >= 1` with `!is_empty()` (newer clippy)
+
+### Changed
+- Bump @netray-info/common-frontend to 0.5.2
+- Bump netray-common to 0.8.1
+
 ## [0.2.1] - 2026-04-11
 
 ### Changed
