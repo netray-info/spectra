@@ -1,3 +1,5 @@
+> **Archived.** This repository moved into the netray monorepo, [`netray-info/netray`](https://github.com/netray-info/netray/tree/main/crates/spectra). Development, issues and releases happen there. This repository publishes nothing further to GHCR images; images and versions already published stay available.
+
 # spectra
 
 **HTTP header inspection and security audit — three probes, one report.**
